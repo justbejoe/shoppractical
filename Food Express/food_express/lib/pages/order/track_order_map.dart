@@ -84,13 +84,13 @@ class _TrackOrderMapState extends State<TrackOrderMap> {
   }
 
   setPolylines() async {
-    PolylineResult? result = await polylinePoints?.getRouteBetweenCoordinates(
+    PolylineResult? result = await polylinePoints.getRouteBetweenCoordinates(
       googleAPIKey,
       PointLatLng(sourceLocatioon.latitude, sourceLocatioon.longitude),
       PointLatLng(destLocatioon.latitude, destLocatioon.longitude),
       travelMode: TravelMode.driving,
     );
-    if (result!.points.isNotEmpty) {
+    if (result.points.isNotEmpty) {
       // loop through all PointLatLng points and convert them
       // to a list of LatLng, required by the Polyline
       result.points.forEach((PointLatLng point) {

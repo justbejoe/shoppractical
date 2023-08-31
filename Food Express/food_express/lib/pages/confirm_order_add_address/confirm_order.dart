@@ -3,6 +3,71 @@ import 'package:food_express/constant/constant.dart';
 import 'package:food_express/pages/home/home.dart';
 import 'package:food_express/pages/confirm_order_add_address/add_new_address.dart';
 
+/*
+To use paystack in this application here is a step by step Guide
+
+- Create a paypal account
+- Get your API key
+- install the paystack plugin from pub.dev and add to dependency file in pubspec.yaml file
+- Initialize the paystack plugin
+
+String publicKeyTest = ''; //pass in the public test key obtained from paystack dashboard here
+
+  final plugin = PaystackPlugin();
+
+@override
+  void initState() {
+    plugin.initialize(publicKey: publicKeyTest);
+    // TODO: implement initState
+    super.initState();
+  }
+
+- Create a function for paystack payment method and pass in 2 variables amount and email
+
+//async method to charge users card and return a response
+  chargeCard() async {
+    var charge = Charge()
+      ..amount = widget.amount *
+          100 //the money should be in kobo hence the need to multiply the value by 100
+      ..reference = _getReference()
+      ..email = widget.email;
+
+    CheckoutResponse response = await plugin.checkout(
+      context,
+      method: CheckoutMethod.card,
+      charge: charge,
+    );
+
+    //check if the response is true or not
+    if (response.status == true) {
+      //you can send some data from the response to an API or use webhook to record the payment on a database
+      _showMessage('Payment was successful!!!');
+    } else {
+      //the payment wasn't successful or the user cancelled the payment
+      _showMessage('Payment Failed!!!');
+    }
+  }
+
+- build a UI/screen/dialogue Box for the display
+- Handle payment responses that come in Json format
+
+void _showMessage(String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  
+- You can get the reference id of the transaction and use it if you wish to
+
+//used to generate a unique reference for payment
+  String _getReference() {
+    var platform = (Platform.isIOS) ? 'iOS' : 'Android';
+    final thisDate = DateTime.now().millisecondsSinceEpoch;
+    return 'ChargedFrom${platform}_$thisDate';
+  }
+
+ */
+
 class ConfirmOrder extends StatefulWidget {
   @override
   _ConfirmOrderState createState() => _ConfirmOrderState();
